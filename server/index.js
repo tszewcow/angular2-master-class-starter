@@ -1,3 +1,5 @@
+'use strict';
+
 let db = require('./data/contacts');
 let bodyParser = require('body-parser');
 let express = require('express');
@@ -17,11 +19,11 @@ let emailIsAvailable = (email) => {
   return contact ? false : true;
 }
 
-let unorderedResponse = process.argv.includes('--unordered-response');
+// let unorderedResponse = process.argv.includes('--unordered-response');
 
-if (unorderedResponse) {
-  console.log('Serving search results unordered')
-}
+// if (unorderedResponse) {
+//   console.log('Serving search results unordered')
+// }
 
 let app = express();
 

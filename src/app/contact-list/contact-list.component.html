@@ -1,0 +1,6 @@
+<md-list>
+  <md-list-item *ngFor="let contact of contacts | async; trackBy: trackByFn" (click)="showDetails(contact.id)">
+    <img md-list-avatar [src]="contact.image" alt="Picture of INSERT_CONTACT_NAME">
+    <h3 md-line>{{contact.name}}</h3>
+  </md-list-item>
+</md-list>
