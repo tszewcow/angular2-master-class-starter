@@ -23,7 +23,7 @@
     </md-card-content>
     <md-card-actions fxLayout fxLayoutAlign="center center">
       <a md-button title="Go back to list" (click)="goBack()">Go Back</a>
-      <a md-button title="Edit" [routerLink]="['/contact-details', contact.id, 'edit']">Edit</a>
+      <a md-button title="Edit" (click)="goEdit($event)">Edit</a>
     </md-card-actions>
   </md-card>
 </div>
