@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class ContactEditorComponent implements OnInit {
 
   title: string = 'edit contacts';
-  contact: Contact = <Contact>{ address: {} };
+  contact: Contact;
 
   constructor(private route: ActivatedRoute, private contactsService: ContactsService, private router: Router, private eventBusService: EventBusService) { }
 

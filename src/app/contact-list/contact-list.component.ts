@@ -1,3 +1,4 @@
+import { EventBusService } from './../event-bus.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { ContactsService } from './../contacts.service';
@@ -18,7 +19,7 @@ export class ContactListComponent implements OnInit {
   contacts: Observable<Array<Contact>>;
 
 
-  constructor(private contactsService: ContactsService, private router: Router) { }
+  constructor(private contactsService: ContactsService, private router: Router, private eventBusService: EventBusService) { }
 
   ngOnInit(): void {
     // this.contactsService.getContacts().subscribe(contacts => this.contacts = contacts);
@@ -26,6 +27,8 @@ export class ContactListComponent implements OnInit {
 
     this.contacts = this.contactsService.search(this.term$, 400)
       .merge(this.contactsService.getContacts());
+
+      this.eventBusService.emit('appTitleChange', 'Contacts');
   }
 
   trackByFn(index, item) {
