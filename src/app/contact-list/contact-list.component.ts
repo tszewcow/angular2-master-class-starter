@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { ContactsService } from './../contacts.service';
 import { Contact } from './../models/contact';
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 
 @Component({
@@ -12,13 +15,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactListComponent implements OnInit {
 
+  private term$ = new Subject<string>();
   contacts: Observable<Array<Contact>>;
+
 
   constructor(private contactsService: ContactsService, private router: Router) { }
 
   ngOnInit(): void {
     // this.contactsService.getContacts().subscribe(contacts => this.contacts = contacts);
     this.contacts = this.contactsService.getContacts();
+
+    this.term$
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(term => this.search(term));
   }
 
   trackByFn(index, item) {
@@ -27,6 +37,10 @@ export class ContactListComponent implements OnInit {
 
   showDetails(id: string): void {
     this.router.navigate(['/contact-details', id]);
+  }
+
+  search(term: string){
+    this.contacts = this.contactsService.search(term);
   }
 
 }

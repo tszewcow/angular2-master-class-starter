@@ -2,13 +2,13 @@ import { CONTACT_DATA } from './data/contact-data';
 import { Contact } from './models/contact';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ContactsService {
 
-    constructor(private http: Http){}
+    constructor(private http: Http) { }
 
     getContacts(): Observable<Contact[]> {
         // return CONTACT_DATA;
@@ -24,10 +24,16 @@ export class ContactsService {
             .map(data => data.item);
     }
 
-    update(contact: Contact):Observable<any>{
+    update(contact: Contact): Observable<any> {
         return this.http.put(`http://localhost:4201/api/contacts/${contact.id}`, contact)
             .map((res) => {
                 return res.status;
             });
+    }
+
+    search(term: string): Observable<any> {
+        return this.http.get(`http://localhost:4201/api/search?text=${term}`)
+            .map(res => res.json())
+            .map(data => data.items);
     }
 }
