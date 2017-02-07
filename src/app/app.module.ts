@@ -1,3 +1,4 @@
+import { EventBusService } from './event-bus.service';
 import { APP_ROUTES } from './app.routes';
 import { ContactsService } from './contacts.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,7 +28,7 @@ import { TabsComponent } from './tabs/tabs/tabs.component';
     FormsModule
   ],
   bootstrap: [ContactsAppComponent],
-  providers: [ContactsService]
+  providers: [ContactsService, EventBusService]
 })
 export class ContactsModule {
 
