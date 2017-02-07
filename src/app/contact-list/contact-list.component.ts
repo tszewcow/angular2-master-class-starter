@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/merge'
 
 
 @Component({
@@ -23,12 +25,13 @@ export class ContactListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.contactsService.getContacts().subscribe(contacts => this.contacts = contacts);
-    this.contacts = this.contactsService.getContacts();
+    // this.contacts = this.contactsService.getContacts();
 
-    this.term$
+    this.contacts = this.term$
       .debounceTime(400)
       .distinctUntilChanged()
-      .subscribe(term => this.search(term));
+      .switchMap(x => this.contactsService.search(x))
+      .merge(this.contactsService.getContacts());
   }
 
   trackByFn(index, item) {
@@ -39,8 +42,8 @@ export class ContactListComponent implements OnInit {
     this.router.navigate(['/contact-details', id]);
   }
 
-  search(term: string){
-    this.contacts = this.contactsService.search(term);
-  }
+  // search(term: string) {
+  //   this.contacts = this.contactsService.search(term);
+  // }
 
 }
