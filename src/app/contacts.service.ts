@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class ContactsService {
@@ -31,7 +34,14 @@ export class ContactsService {
             });
     }
 
-    search(term: string): Observable<any> {
+    search(term: Observable<string>, debounceTime: number = 400) {
+        return term
+            .debounceTime(debounceTime)
+            .distinctUntilChanged()
+            .switchMap(searchTerm => this.rawSearch(searchTerm));
+    }
+
+    rawSearch(term: string): Observable<any> {
         return this.http.get(`http://localhost:4201/api/search?text=${term}`)
             .map(res => res.json())
             .map(data => data.items);
